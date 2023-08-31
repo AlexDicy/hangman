@@ -1,5 +1,5 @@
 import express from "express";
-import WebSocket from "ws";
+import { WebSocketServer } from "ws";
 
 import Player from "./public/modules/Player.js";
 import GameStatus from "./public/modules/GameStatus.js";
@@ -10,6 +10,7 @@ const app = express();
 app.use(express.static("public"));
 // ascolta sulla porta 80
 const server = app.listen(process.env.PORT || 80);
+console.log("Server started, listening on http://localhost:" + (process.env.PORT || 80));
 
 const players = [];
 let nextPlayerId = 0;
@@ -25,7 +26,7 @@ let wordLetters = [];
 let keyboard = [];
 
 // abilita il server websocket
-const ws = new WebSocket.Server({noServer: true});
+const ws = new WebSocketServer({noServer: true});
 ws.on("connection", client => {
   try {
     if (nextPlayerId >= Number.MAX_SAFE_INTEGER) {
